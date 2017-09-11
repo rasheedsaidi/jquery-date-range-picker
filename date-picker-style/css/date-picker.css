@@ -448,6 +448,3 @@
     color: #4499EE;
     font-weight: bold;
 }
-.start-month-year:after {
- content: '\A';
-}

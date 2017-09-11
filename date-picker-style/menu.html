@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	
+	<script>
+
+	
+	$(document).ready(function() {
+		$( '.main-menu ul > li' ).click(
+			function(){
+				$(this).children('.wrapper').children('ul').slideToggle(200);
+			}
+		);
+	});
+
+	</script>
+
+
+
+<!-- Necessary Style -->
+
+	<style>
+		
+		.container {
+		    margin: 0 auto;
+		    max-width: 960px;
+		    text-align: center;
+		}
+		.main-menu ul {
+		    list-style: outside none none;
+		    margin: 0;
+		    padding: 0;
+		}
+		.main-menu ul li {
+		    cursor: pointer;
+		    display: inline-block;
+		    font-size: 18px;
+		    margin-right: 50px;
+		    position: relative;
+		}
+		.main-menu {
+		    background: rgba(0, 139, 255, 0.8) none repeat scroll 0 0;
+		    color: #ffffff;
+		    line-height: 20px;
+		    padding: 17px 0;
+		}
+
+		.main-menu ul li .wrapper {
+		    background: green none repeat scroll 0 0;
+		    color: #ffffff;
+		    left: 0;
+		    position: absolute;
+		    top: 40px;
+		}
+		.main-menu ul li .wrapper ul {
+		    list-style: outside none none;
+		    margin: 0;
+		    padding: 0;
+		}
+		.main-menu ul li .wrapper ul li {
+		    display: block;
+		    margin-right: -4px;
+		}
+		.main-menu ul li .wrapper ul li a {
+		    color: #ffffff;
+		    display: block;
+		    padding: 9px 20px;
+		    text-decoration: none;
+		}
+		.main-menu ul li .wrapper > ul
+		{
+			display:none;
+			
+		}
+
+	</style>
+
+
+</head>
+<body>
+
+<h2>I need "The green text with menu item will show when I will click each menu item and generally it's should hide" </h2>
+
+	<div class="menu-wrapper">
+		<div class="container">
+			<div class="main-menu">
+				<ul>
+					<li>Sign In
+
+						<div class="wrapper">
+							<ul>
+								<li><a href="#">Mosharaf</a></li>
+								<li><a href="#">Mosharaf</a></li>
+								<li><a href="#">Mosharaf</a></li>
+							</ul>
+						</div>
+
+					</li>
+
+
+					<li>Sign Out
+
+						<div class="wrapper">
+							<ul>
+								<li><a href="#">Mosharaf</a></li>
+								<li><a href="#">Mosharaf</a></li>
+								<li><a href="#">Mosharaf</a></li>
+							</ul>
+						</div>
+					</li>
+
+					<li>View Profile
+
+						<div class="wrapper">
+							<ul>
+								<li><a href="#">Mosharaf</a></li>
+								<li><a href="#">Mosharaf</a></li>
+								<li><a href="#">Mosharaf</a></li>
+							</ul>
+						</div>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
+
+background: #e3f3fe;
+padding: 0;
+border-color: #e5f2fd;
+border-radius: 0px;
