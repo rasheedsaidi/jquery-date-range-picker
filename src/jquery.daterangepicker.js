@@ -1767,6 +1767,8 @@
             box.find('.selected-days').hide();
             if (opt.start) {
                 box.find('.start-day').html(getDateString(new Date(parseInt(opt.start))));
+                var start_day_date = new Date(parseInt(opt.start));
+                console.log(start_day_date)
             }
             if (opt.end) {
                 box.find('.end-day').html(getDateString(new Date(parseInt(opt.end))));
@@ -2072,6 +2074,10 @@
             return moment(d).format(opt.format);
         }
 
+        function getDateStringByFormat(d) {
+            return moment(d).format(opt.format);
+        }
+
         function showGap() {
             showSelectedDays();
             var m1 = parseInt(moment(opt.month1).format('YYYYMM'));
@@ -2154,6 +2160,61 @@
             if (!opt.showTopbar) html += ' no-topbar ';
             if (opt.customTopBar) html += ' custom-topbar ';
             html += '">';
+            html += '<div class="top-box">';
+
+            if (opt.showShortcuts) {
+                html += '<div class="shortcuts"><b>' + translate('shortcuts') + '</b>';
+
+                var data = opt.shortcuts;
+                if (data) {
+                    var name;
+                    if (data['prev-days'] && data['prev-days'].length > 0) {
+                        html += '&nbsp;<span class="prev-days">' + translate('past');
+                        for (var i = 0; i < data['prev-days'].length; i++) {
+                            name = data['prev-days'][i];
+                            name += (data['prev-days'][i] > 1) ? translate('days') : translate('day');
+                            html += ' <a href="javascript:;" shortcut="day,-' + data['prev-days'][i] + '">' + name + '</a>';
+                        }
+                        html += '</span>';
+                    }
+
+                    if (data['next-days'] && data['next-days'].length > 0) {
+                        html += '&nbsp;<span class="next-days">' + translate('following');
+                        for (var i = 0; i < data['next-days'].length; i++) {
+                            name = data['next-days'][i];
+                            name += (data['next-days'][i] > 1) ? translate('days') : translate('day');
+                            html += ' <a href="javascript:;" shortcut="day,' + data['next-days'][i] + '">' + name + '</a>';
+                        }
+                        html += '</span>';
+                    }
+
+                    if (data.prev && data.prev.length > 0) {
+                        html += '&nbsp;<span class="prev-buttons">' + translate('previous');
+                        for (var i = 0; i < data.prev.length; i++) {
+                            name = translate('prev-' + data.prev[i]);
+                            html += ' <a href="javascript:;" shortcut="prev,' + data.prev[i] + '">' + name + '</a>';
+                        }
+                        html += '</span>';
+                    }
+
+                    if (data.next && data.next.length > 0) {
+                        html += '&nbsp;<span class="next-buttons">' + translate('next');
+                        for (var i = 0; i < data.next.length; i++) {
+                            name = translate('next-' + data.next[i]);
+                            html += ' <a href="javascript:;" shortcut="next,' + data.next[i] + '">' + name + '</a>';
+                        }
+                        html += '</span>';
+                    }
+                }
+
+                if (opt.customShortcuts) {
+                    for (var i = 0; i < opt.customShortcuts.length; i++) {
+                        var sh = opt.customShortcuts[i];
+                        html += '&nbsp;<span class="custom-shortcut"><a href="javascript:;" shortcut="custom">' + sh.name + '</a></span>';
+                    }
+                }
+                html += '</div>';
+            }
 
             if (opt.showTopbar) {
                 html += '<div class="drp_top-bar">';
@@ -2162,10 +2223,16 @@
                     if (typeof opt.customTopBar == 'function') opt.customTopBar = opt.customTopBar();
                     html += '<div class="custom-top">' + opt.customTopBar + '</div>';
                 } else {
-                    html += '<div class="normal-top">' +
+                    html += '<div class="normal-top">';
+                    html += '<div class="date-range"><table class="selected-date-table"><tr><td rowspan="2"><span class="start-day">16</span></td>';
+                    html += '<td><span class="start-month-year"><span class="start-date-month">Nov</span> <span class="start-date-year">2017</span>';
+                    html += '</span></td><td rowspan="2"><span class="end-day">16</span></td><td><span class="end-month-year">';
+                    html += '<span class="end-date-month">Nov</span><span class="end-date-year">2017</span></span></td>';
+                    html += '</tr><tr><td><span class="start-day-label">Wednesday</span></td><td><span class="end-day-label">Wednesday</span></td>';
+                    html += '</tr></table></div>';
                         '<span style="color:#333">' + translate('selected') + ' </span> <b class="start-day">...</b>';
                     if (!opt.singleDate) {
-                        html += ' <span class="separator-day">' + opt.separator + '</span> <b class="end-day">...</b> <i class="selected-days">(<span class="selected-days-num">3</span> ' + translate('days') + ')</i>';
+                        //html += ' <span class="separator-day">' + opt.separator + '</span> <b class="end-day">...</b> <i class="selected-days">(<span class="selected-days-num">3</span> ' + translate('days') + ')</i>';
                     }
                     html += '</div>';
                     html += '<div class="error-top">error</div>' +
@@ -2236,59 +2303,7 @@
                 '</div>';
 
             html += '<div class="footer">';
-            if (opt.showShortcuts) {
-                html += '<div class="shortcuts"><b>' + translate('shortcuts') + '</b>';
-
-                var data = opt.shortcuts;
-                if (data) {
-                    var name;
-                    if (data['prev-days'] && data['prev-days'].length > 0) {
-                        html += '&nbsp;<span class="prev-days">' + translate('past');
-                        for (var i = 0; i < data['prev-days'].length; i++) {
-                            name = data['prev-days'][i];
-                            name += (data['prev-days'][i] > 1) ? translate('days') : translate('day');
-                            html += ' <a href="javascript:;" shortcut="day,-' + data['prev-days'][i] + '">' + name + '</a>';
-                        }
-                        html += '</span>';
-                    }
-
-                    if (data['next-days'] && data['next-days'].length > 0) {
-                        html += '&nbsp;<span class="next-days">' + translate('following');
-                        for (var i = 0; i < data['next-days'].length; i++) {
-                            name = data['next-days'][i];
-                            name += (data['next-days'][i] > 1) ? translate('days') : translate('day');
-                            html += ' <a href="javascript:;" shortcut="day,' + data['next-days'][i] + '">' + name + '</a>';
-                        }
-                        html += '</span>';
-                    }
-
-                    if (data.prev && data.prev.length > 0) {
-                        html += '&nbsp;<span class="prev-buttons">' + translate('previous');
-                        for (var i = 0; i < data.prev.length; i++) {
-                            name = translate('prev-' + data.prev[i]);
-                            html += ' <a href="javascript:;" shortcut="prev,' + data.prev[i] + '">' + name + '</a>';
-                        }
-                        html += '</span>';
-                    }
-
-                    if (data.next && data.next.length > 0) {
-                        html += '&nbsp;<span class="next-buttons">' + translate('next');
-                        for (var i = 0; i < data.next.length; i++) {
-                            name = translate('next-' + data.next[i]);
-                            html += ' <a href="javascript:;" shortcut="next,' + data.next[i] + '">' + name + '</a>';
-                        }
-                        html += '</span>';
-                    }
-                }
-
-                if (opt.customShortcuts) {
-                    for (var i = 0; i < opt.customShortcuts.length; i++) {
-                        var sh = opt.customShortcuts[i];
-                        html += '&nbsp;<span class="custom-shortcut"><a href="javascript:;" shortcut="custom">' + sh.name + '</a></span>';
-                    }
-                }
-                html += '</div>';
-            }
+            
 
             // Add Custom Values Dom
             if (opt.showCustomValues) {
