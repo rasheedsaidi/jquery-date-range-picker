@@ -17,8 +17,8 @@
 .date-picker-wrapper {
     position: absolute;
     z-index: 1;
-    border: 1px solid #bfbfbf;
-    background-color: #efefef;
+    border: 1px solid #e5f2fd;
+    background-color: #fff;
     padding: 5px 12px;
     font-size: 12px;
     line-height: 20px;
@@ -26,6 +26,8 @@
     font-family: Arial, sans-serif;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
     box-sizing: initial;
+    padding: 0;
+    border-radius: 0px;
 }
 
 .date-picker-wrapper.inline-wrapper {
@@ -53,16 +55,19 @@
 
 .date-picker-wrapper b {
     color: #666;
-    font-weight: 700;
+    font-weight: 300;
 }
 
 .date-picker-wrapper a {
-    color: rgb(107, 180, 214);
-    text-decoration: underline;
+    color: #666;
+    text-decoration: none;
+    margin-right: 5px;
+    font-size: .9em;
 }
 
 .date-picker-wrapper .month-name {
     text-transform: uppercase;
+    font-weight: 600;
 }
 
 .date-picker-wrapper .select-wrapper {
@@ -105,10 +110,10 @@
 }
 
 .date-picker-wrapper .month-wrapper {
-    border: 1px solid #bfbfbf;
-    border-radius: 3px;
+    border: none;
+    border-radius: 0px;
     background-color: #fff;
-    padding: 5px;
+    padding: 0px 20px;
     cursor: default;
     position: relative;
     _overflow: hidden;
@@ -182,7 +187,7 @@
 }
 
 .date-picker-wrapper .month-wrapper table .day.real-today {
-    background-color: rgb(255, 230, 132);
+    background-color: transparent; /* rgb(255, 230, 132); */
 }
 
 .date-picker-wrapper .month-wrapper table .day.real-today.checked,
@@ -287,7 +292,7 @@
 .date-picker-wrapper .drp_top-bar {
     line-height: 1.4;
     position: relative;
-    padding: 10px 40px 10px 0;
+    padding: 10px;
 }
 
 .date-picker-wrapper .drp_top-bar .error-top {
@@ -317,6 +322,7 @@
 
 .date-picker-wrapper .drp_top-bar.normal .normal-top {
     display: block;
+    border: none;
 }
 
 .date-picker-wrapper .drp_top-bar .apply-btn {
@@ -392,13 +398,17 @@
 }
 
 .date-picker-wrapper .first-date-selected {
-    background-color: #49e !important;
-    color: white !important;
+    /*background-color: #49e !important;
+    color: white !important;*/
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
 .date-picker-wrapper .last-date-selected {
-    background-color: #49e !important;
-    color: white !important;
+    /*background-color: #49e !important;
+    color: white !important;*/
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .date-picker-wrapper .date-range-length-tip {
@@ -448,6 +458,39 @@
     color: #4499EE;
     font-weight: bold;
 }
-.start-month-year:after {
- content: '\A';
+.selected-date-table {
+    width: 100%;
+    font-size: 14px;
+    color: #0f0f0f;
+}
+.selected-date-table .start-date-day, .selected-date-table .end-date-day {
+    font-weight: 700;
+    font-size: 24px;
+    float: right;
+    padding-right: 5px;
+}
+.selected-date-table .start-date-name, .selected-date-table .end-date-name {
+    font-size: 12px;
+    color: #999;
+}
+.shortcuts {
+    padding: 5px 10px 0px;
+    text-align: center;
+}
+.top-box {
+    background-color: #e3f3fe;
+}
+.apply-btn {
+    margin: 1em 2em;
+    background: #4499ee;
+    padding: 8px 12px;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    float: right;
+}
+.custom-text-top {
+    color: #4499ee;
+    font-size: .9em;
+    text-decoration: underline;
 }

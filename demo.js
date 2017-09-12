@@ -184,8 +184,8 @@ $(function()
 		showShortcuts: true,	
 		shortcuts : 
 		{
-			'next-days': [3,5,7],
-			'next': ['week','month','year']
+			'next-days': [7,14,30],
+			//'next': ['week','month','year']
 		}
 	});
 
