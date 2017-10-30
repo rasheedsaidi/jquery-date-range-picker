@@ -29,7 +29,7 @@ npm install -g gulp@3.9.1
 ```
 * Clone this project
 ```
-git clone https://github.com/longbill/jquery-date-range-picker.git
+git clone  https://github.com/rasheedsaidi/jquery-date-range-picker.git
 cd jquery-date-range-picker
 ```
 * Install local dependencies
