@@ -245,6 +245,46 @@ $(function()
 		}
 	});
 
+	$('#date-range90').dateRangePicker(
+	{
+		getValue: function()
+		{
+			return this.innerHTML;
+		},
+		setValue: function(s)
+		{
+			console.log(s)
+			$('#date_result').html(s)
+			//this.innerHTML = s;
+		},
+		singleMonth: true,
+		monthSelect: true,
+		yearSelect: true
+	}).bind('datepicker-opened',function()
+	{
+		$('#date-range90').addClass('open');
+	}).bind('datepicker-closed',function()
+	{
+		$('#date-range90').removeClass('open');
+	});
+
+	$('#date-range90').click(function(evt)
+	{
+		evt.stopPropagation();
+		var a = $('#date-range90').hasClass('open');
+		if(a) {
+			$('#date-range90').data('dateRangePicker').close();
+			$('#date-range90').addClass('close');
+			$('#date-range90').removeClass('open');
+		}
+	});
+
+	$('#date-range90').click(function(evt)
+	{
+		evt.stopPropagation();
+		$('#date-range90').data('dateRangePicker').setDateRange(new Date(), new Date());
+	});
+
 	$('#two-inputs').dateRangePicker(
 	{
 		separator : ' to ',
@@ -291,7 +331,7 @@ $(function()
 
 	$('#date-range14').dateRangePicker(
 	{
-		batchMode: 'week',
+		batchMode: 'seven-days',
 		showShortcuts: false
 	});
 

@@ -23,15 +23,15 @@
             "day": " day",
             "days": " days",
             "apply": "Close",
-            "week-1": "mo",
-            "week-2": "tu",
-            "week-3": "we",
-            "week-4": "th",
-            "week-5": "fr",
-            "week-6": "sa",
-            "week-7": "su",
+            "week-1": "Mo",
+            "week-2": "Tu",
+            "week-3": "We",
+            "week-4": "Th",
+            "week-5": "Fr",
+            "week-6": "Sa",
+            "week-7": "Su",
             "week-number": "W",
-            "month-name": ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"],
+            "month-name": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
             "shortcuts": "", //"Shortcuts",
             "custom-values": "Custom Values",
             "past": "", //"Past",
@@ -977,7 +977,9 @@
             },
             clear: clearSelection,
             close: closeDatePicker,
+            toggle: toggleDatePicker,
             open: open,
+            isOpen: box.is(':visible'),
             redraw: redrawDatePicker,
             getDatePicker: getDatePicker,
             resetMonthsView: resetMonthsView,
@@ -1159,12 +1161,40 @@
                 if (opt.autoClose) closeDatePicker();
             });
 
-            box.find('[shortcut]').click(function() {
+            box.find('.custom-text-top').click(function() {
+                $('a[shortcut]').removeClass('active-date');
                 var shortcut = $(this).attr('shortcut');
+                $(this).addClass('active-date');
+                opt.batchMode = null;
+                clearSelection();
+                var end = new Date();
+                var start = end;
+                if (start && end) {
+                    setDateRange(start, end);
+                    checkSelectionValid();
+                }
+            });
+
+            box.find('[shortcut]').click(function() {
+                $('a[shortcut]').removeClass('active-date');
+                $('.custom-text-top').removeClass('active-date');
+                var shortcut = $(this).attr('shortcut');
+                $(this).addClass('active-date');
                 var end = new Date(),
                     start = false;
                 var dir;
                 if (shortcut.indexOf('day') != -1) {
+                    var day = parseInt(shortcut.split(',', 2)[1], 10);
+                    if(day === 7) {
+                        opt.batchMode = 'seven-days';
+                    } else if(day === 14) {
+                        opt.batchMode = 'fourteen-days';
+                    } else if(day === 30) {
+                        opt.batchMode = 'thirty-days';
+                    }
+                    start = new Date(new Date().getTime() + 86400000 * day);
+                    end = new Date(end.getTime() + 86400000 * (day > 0 ? -1 : -1));
+                } else if (shortcut.indexOf('seven') != -1) {
                     var day = parseInt(shortcut.split(',', 2)[1], 10);
                     start = new Date(new Date().getTime() + 86400000 * day);
                     end = new Date(end.getTime() + 86400000 * (day > 0 ? 1 : -1));
@@ -1293,7 +1323,7 @@
                     });
                 });
             } else {
-                box.slideDown(animationTime, function() {
+                box.fadeIn(animationTime, function() {
                     $(self).trigger('datepicker-opened', {
                         relatedTarget: box
                     });
@@ -1424,6 +1454,9 @@
                 }
             } else if (opt.batchMode === 'month-range') {
                 r = moment(parseInt(time)).startOf('month').valueOf();
+            } else if (opt.batchMode === 'seven-days') {
+                opt.endBatchDate = time;
+                r = moment(parseInt(time)).subtract(6, 'days').valueOf();
             }
             return r;
         }
@@ -1438,6 +1471,10 @@
                 }
             } else if (opt.batchMode === 'month-range') {
                 r = moment(parseInt(time)).endOf('month').valueOf();
+            } else if (opt.batchMode === 'seven-days' || opt.batchMode === 'fourteen-days' || opt.batchMode === 'thirty-days') {
+                var t = (opt.endBatchDate)? opt.endBatchDate: time;
+                //opt.endBatchDate = t;
+                r = t;
             }
             return r;
         }
@@ -1458,6 +1495,15 @@
                     opt.end = moment(parseInt(time)).endOf('week').valueOf();
                     opt.start = moment(parseInt(time)).startOf('week').valueOf();
                 }
+            } else if (opt.batchMode === 'seven-days') {
+                opt.start =  moment(parseInt(time)).subtract(6, 'days').valueOf();
+                opt.end = time;
+            } else if (opt.batchMode === 'fourteen-days') {
+                opt.start =  moment(parseInt(time)).subtract(13, 'days').valueOf();
+                opt.end = time;
+            } else if (opt.batchMode === 'thirty-days') {
+                opt.start =  moment(parseInt(time)).subtract(29, 'days').valueOf();
+                opt.end = time;
             } else if (opt.batchMode === 'workweek') {
                 opt.start = moment(parseInt(time)).day(1).valueOf();
                 opt.end = moment(parseInt(time)).day(5).valueOf();
@@ -2108,6 +2154,13 @@
             box.find('.gap').height(Math.max(h1, h2) + 10);
         }
 
+        function toggleDatePicker() {
+            var isOpen = box.is(':visible');
+            if(isOpen) {
+                closeDatePicker();
+            }
+        }
+
         function closeDatePicker() {
             if (opt.alwaysOpen) return;
 
@@ -2120,7 +2173,7 @@
             if (opt.customCloseAnimation) {
                 opt.customCloseAnimation.call(box.get(0), afterAnim);
             } else {
-                $(box).slideUp(opt.duration, afterAnim);
+                $(box).fadeOut(opt.duration, afterAnim);
             }
             $(self).trigger('datepicker-close', {
                 relatedTarget: box
@@ -2189,7 +2242,7 @@
                             name += (data['prev-days'][i] > 1) ? translate('days') : translate('day');
                             html += ' <a href="javascript:;" shortcut="day,-' + data['prev-days'][i] + '">' + name + '</a>';
                         }
-                        html += '</span>';
+                        html += ' <span class="custom-text-top active-date">Custom</span></span>';
                     }
 
                     if (data['next-days'] && data['next-days'].length > 0) {
@@ -2199,7 +2252,7 @@
                             name += (data['next-days'][i] > 1) ? translate('days') : translate('day');
                             html += ' <a href="javascript:;" shortcut="day,' + data['next-days'][i] + '">' + name + '</a>';
                         }
-                        html += ' <span class="custom-text-top">Custom</span></span>';
+                        html += ' <span class="custom-text-top active-date">Custom</span></span>';
                     }
 
                     if (data.prev && data.prev.length > 0) {
@@ -2208,7 +2261,7 @@
                             name = translate('prev-' + data.prev[i]);
                             html += ' <a href="javascript:;" shortcut="prev,' + data.prev[i] + '">' + name + '</a>';
                         }
-                        html += ' <span class="custom-text-top">Custom</span></span>';
+                        html += ' <span class="custom-text-top active-date">Custom</span></span>';
                     }
 
                     if (data.next && data.next.length > 0) {
@@ -2217,7 +2270,7 @@
                             name = translate('next-' + data.next[i]);
                             html += ' <a href="javascript:;" shortcut="next,' + data.next[i] + '">' + name + '</a>';
                         }
-                        html += ' <span class="custom-text-top">Custom</span></span>';
+                        html += ' <span class="custom-text-top active-date">Custom</span></span>';
                     }
                 }
 

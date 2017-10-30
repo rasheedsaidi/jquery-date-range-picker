@@ -66,8 +66,9 @@
 }
 
 .date-picker-wrapper .month-name {
-    text-transform: uppercase;
+    text-transform: none;
     font-weight: 600;
+    color: #333;
 }
 
 .date-picker-wrapper .select-wrapper {
@@ -160,8 +161,9 @@
 .date-picker-wrapper .month-wrapper table .week-name {
     height: 20px;
     line-height: 20px;
-    font-weight: 100;
-    text-transform: uppercase;
+    font-weight: normal;
+    text-transform: none;
+    color: #888;
 }
 
 .date-picker-wrapper .month-wrapper table .day.has-tooltip {
@@ -490,7 +492,12 @@
     float: right;
 }
 .custom-text-top {
-    color: #4499ee;
+    color: #666;
+    cursor: pointer;
+}
+.active-date, .date-picker-wrapper a.active-date {
+    color: #49e;
     font-size: .9em;
     text-decoration: underline;
+    cursor: pointer;
 }
